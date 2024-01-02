@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro2015 <macbookpro2015@student.    +#+  +:+       +#+        */
+/*   By: wamonvor <wamonvor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/23 22:21:36 by macbookpro2       #+#    #+#             */
-/*   Updated: 2023/12/23 22:21:43 by macbookpro2      ###   ########.fr       */
+/*   Created: 2023/07/05 20:23:36 by caunhach          #+#    #+#             */
+/*   Updated: 2023/12/25 16:30:34 by wamonvor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/cub3d.h"
+#include "inc/libft.h"
 
-void	ft_error(char *msg)
+int	ft_isspace(char c)
 {
-	int	i;
-
-	i = -1;
-	while (msg[++i])
-		write(1, &msg[i], 1);
-	exit(EXIT_FAILURE);
+	if (c == 32 || (c >= 9 && c <= 12))
+		return (1);
+	return (0);
 }

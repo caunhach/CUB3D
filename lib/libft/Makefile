@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: caunhach <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: wichitt <wichitt@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/15 17:50:21 by caunhach          #+#    #+#              #
-#    Updated: 2023/06/27 18:05:55 by caunhach         ###   ########.fr        #
+#    Updated: 2023/12/20 08:13:19 by wichitt          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRCS = ft_isalnum.c \
        ft_memcmp.c \
        ft_putchar_fd.c \
        ft_split.c \
+       ft_isspace.c \
        ft_strlcat.c \
        ft_strncmp.c \
        ft_substr.c \

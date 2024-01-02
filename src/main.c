@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caunhach <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: wamonvor <wamonvor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 23:33:41 by caunhach          #+#    #+#             */
-/*   Updated: 2023/12/06 23:33:46 by caunhach         ###   ########.fr       */
+/*   Updated: 2023/12/25 17:28:18 by wamonvor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@ void	unit_plane(t_cub3d *cub3d)
 	cub3d->plyr->u_plny = cub3d->plyr->plny / 0.66;
 }
 
-void	init_player(t_cub3d *cub3d)
+void	init_playersnew(t_cub3d *cub3d)
 {
-	cub3d->plyr->posx = 13.5;
-	cub3d->plyr->posy = 2.5;
-	cub3d->plyr->dirx = 1;
-	cub3d->plyr->diry = 0;
-	cub3d->plyr->plnx = 0;
-	cub3d->plyr->plny = -0.66;
+	cub3d->plyr->posx = cub3d->map->plyx;
+	cub3d->plyr->posy = cub3d->map->plyy;
+	if (cub3d->map->snwe == 'S')
+		set_pos_s(cub3d);
+	if (cub3d->map->snwe == 'N')
+		set_pos_n(cub3d);
+	if (cub3d->map->snwe == 'E')
+		set_pos_e(cub3d);
+	if (cub3d->map->snwe == 'W')
+		set_pos_w(cub3d);
 	cub3d->plyr->fr_x = 0;
 	cub3d->plyr->fr_y = 0;
 	cub3d->plyr->rg_x = 0;
@@ -42,7 +46,7 @@ void	init_player(t_cub3d *cub3d)
 	unit_plane(cub3d);
 }
 
-int	init_cub3d(t_cub3d *cub3d)
+int	init_cub3d(t_cub3d *cub3d, t_file *file)
 {
 	cub3d->img = (t_img *)malloc(sizeof(t_img));
 	cub3d->ray = (t_ray *)malloc(sizeof(t_ray));
@@ -50,35 +54,33 @@ int	init_cub3d(t_cub3d *cub3d)
 	if (!cub3d->img || !cub3d->ray || !cub3d->plyr)
 		return (1);
 	init_param(cub3d);
-	init_player(cub3d);
+	init_file(file);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_cub3d	*cub3d;
+	t_map	*map;
+	t_file	*file;
 
+	if (argc != 2)
+		ft_error("please try again Ex: ./cub3D <map_path>.cub");
+	if (!iscub(argv[1]))
+		ft_error("ERROR : FILE MAP TYPE *.cub");
 	cub3d = (t_cub3d *)malloc(sizeof(t_cub3d));
-	if (!cub3d)
-		ft_error(alloc_fail);
-	if (init_cub3d(cub3d))
+	map = (t_map *)malloc(sizeof(t_map));
+	file = malloc(sizeof(t_file));
+	makemalloc(file, cub3d, map);
+	if (init_cub3d(cub3d, file))
 	{
 		free_cub3d(cub3d);
-		ft_error(alloc_fail);
+		ft_error(ALLOC_FAIL);
 	}
-	cub3d->map = map_parse();
-	// printf("%s\n", cub3d->map->mat_map[0]);
-	// printf("%s\n", cub3d->map->mat_map[1]);
-	// printf("%s\n", cub3d->map->mat_map[2]);
-	// printf("%s\n", cub3d->map->mat_map[3]);
-	// printf("%s\n", cub3d->map->mat_map[4]);
-	// printf("%s\n", cub3d->map->mat_map[5]);
-	// printf("%s\n", cub3d->map->mat_map[6]);
-	// printf("%s\n", cub3d->map->mat_map[7]);
-	// printf("%s\n", cub3d->map->mat_map[8]);
-	// printf("%s\n", cub3d->map->mat_map[9]);
+	if (parsingmap(cub3d, file, argv[1]))
+		ft_error("ERROR : parsing map process");
+	init_playersnew(cub3d);
 	start_game(cub3d);
-	// free_cub3d(cub3d);
-	(void)argv;
-	(void)argc;
+	free_cub3d(cub3d);
+	return (0);
 }

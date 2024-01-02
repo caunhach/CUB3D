@@ -1,57 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_casting.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wamonvor <wamonvor@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/25 12:13:55 by wamonvor          #+#    #+#             */
+/*   Updated: 2024/01/02 13:07:26 by wamonvor         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/cub3d.h"
 
 void	find_side(t_cub3d *cub3d)
 {
-	if (cub3d->ray->side == vert)
+	if (cub3d->ray->side == HORI)
 	{
 		if (cub3d->ray->raydiry > 0)
-			cub3d->ray->side = N;
+			cub3d->ray->side = E;
 		else if (cub3d->ray->raydiry < 0)
-			cub3d->ray->side = S;
+			cub3d->ray->side = W;
 	}
-	else if (cub3d->ray->side == hori)
+	else if (cub3d->ray->side == VERT)
 	{
 		if (cub3d->ray->raydirx < 0)
-			cub3d->ray->side = E;
+			cub3d->ray->side = N;
 		else if (cub3d->ray->raydirx > 0)
-			cub3d->ray->side = W;
+			cub3d->ray->side = S;
 	}
 }
 
 void	find_wall(t_cub3d *cub3d)
 {
-	// printf("plx : %d\n", cub3d->ray->pl_x);
-	// printf("ply : %d\n", cub3d->ray->pl_y);
-	// printf("idelx : %lf\n", cub3d->ray->idelx);
-	// printf("idely : %lf\n", cub3d->ray->idely);
 	while (1)
 	{
 		if (cub3d->ray->idelx < cub3d->ray->idely)
 		{
 			cub3d->ray->idelx += cub3d->ray->delx;
 			cub3d->ray->pl_x += cub3d->ray->stepx;
-			cub3d->ray->side = hori;
+			cub3d->ray->side = VERT;
 		}
 		else
 		{
 			cub3d->ray->idely += cub3d->ray->dely;
 			cub3d->ray->pl_y += cub3d->ray->stepy;
-			cub3d->ray->side = vert;
+			cub3d->ray->side = HORI;
 		}
 		if (cub3d->map->mat_map[cub3d->ray->pl_y] \
-			[cub3d->ray->pl_x] - '0')
+			[cub3d->ray->pl_x] - '0' == 1)
 		{
 			find_side(cub3d);
-			break;
+			break ;
 		}
 	}
-	// printf("%c\n", cub3d->map->mat_map[2][13]);
-	// printf("%c\n", cub3d->map->mat_map[5][3]);
-	// printf("plx : %d\n", cub3d->ray->pl_x);
-	// printf("ply : %d\n", cub3d->ray->pl_y);
-	// printf("idelx : %lf\n", cub3d->ray->idelx);
-	// printf("idely : %lf\n", cub3d->ray->idely);
-	// printf("side : %d\n", cub3d->ray->side);
 }
 
 void	cal_sidedist(t_cub3d *cub3d)
@@ -86,7 +87,7 @@ void	cal_dda(t_cub3d *cub3d)
 {
 	double	pln_ratio;
 
-	pln_ratio = (double) 2 * cub3d->ray->win_x / WIN_W - 1;
+	pln_ratio = 2 * (double)cub3d->ray->win_x / (double)WIN_W - 1;
 	cub3d->ray->raydirx = cub3d->plyr->dirx + cub3d->plyr->plnx * pln_ratio;
 	cub3d->ray->raydiry = cub3d->plyr->diry + cub3d->plyr->plny * pln_ratio;
 	cub3d->ray->pl_x = (int)cub3d->plyr->posx;
@@ -96,20 +97,6 @@ void	cal_dda(t_cub3d *cub3d)
 	cal_sidedist(cub3d);
 	find_wall(cub3d);
 	cal_prepwall(cub3d);
-	// printf("raydirx: %lf\n", cub3d->ray->raydirx);
-	// printf("raydiry: %lf\n", cub3d->ray->raydiry);
-	// printf("pl_x: %d\n", cub3d->ray->pl_x);
-	// printf("pl_y: %d\n", cub3d->ray->pl_y);
-	// printf("posx: %lf\n", cub3d->plyr->posx);
-	// printf("posy: %lf\n", cub3d->plyr->posy);
-	// printf("delx: %lf\n", cub3d->ray->delx);
-	// printf("dely: %lf\n", cub3d->ray->dely);
-	// printf("stepx: %d\n", cub3d->ray->stepx);
-	// printf("idelx: %lf\n", cub3d->ray->idelx);
-	// printf("stepy: %d\n", cub3d->ray->stepy);
-	// printf("idely: %lf\n", cub3d->ray->idely);
-	// printf("side: %d\n", cub3d->ray->side);
-	// printf("prepwall: %lf\n", cub3d->ray->prepwalldist);
 }
 
 void	ray_cast(t_cub3d *cub3d)
@@ -117,7 +104,6 @@ void	ray_cast(t_cub3d *cub3d)
 	cub3d->ray->win_x = 0;
 	while (cub3d->ray->win_x < WIN_W)
 	{
-		// cub3d->ray->win_x = WIN_W/2;
 		cal_dda(cub3d);
 		draw(cub3d);
 		cub3d->ray->win_x++;

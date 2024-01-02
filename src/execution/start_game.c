@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_game.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wamonvor <wamonvor@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/25 12:14:00 by wamonvor          #+#    #+#             */
+/*   Updated: 2024/01/02 13:08:33 by wamonvor         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/cub3d.h"
 
-int		game_loop(void *cub)
+int	game_loop(void *cub)
 {
 	t_cub3d	*cub3d;
 
@@ -18,7 +30,6 @@ int		game_loop(void *cub)
 
 void	init_mlx(t_cub3d *cub3d)
 {
-	cub3d->mlx = mlx_init();
 	cub3d->win = mlx_new_window(cub3d->mlx, WIN_W, WIN_H, "CUB3D");
 	cub3d->img->img = mlx_new_image(cub3d->mlx, WIN_W, WIN_H);
 	cub3d->img->addr = mlx_get_data_addr(cub3d->img->img,
